@@ -1,0 +1,15 @@
+server:
+  port: 9090
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://auth-server:9000/oauth2/jwks
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG

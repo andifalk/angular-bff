@@ -1,0 +1,46 @@
+spring:
+  redis:
+    host: localhost
+    port: 6379
+  security:
+    oauth2:
+      client:
+        registration:
+          bff:
+            provider: authzserver
+            client-id: demo-client-pkce
+            authorization-grant-type: authorization_code
+            clientAuthenticationMethod: none
+            redirectUri: http://client.local:9095/login/oauth2/code/bff
+            scope:
+              - openid
+              - offline_access
+        provider:
+          authzserver:
+            authorization-uri: http://auth-server:9000/oauth2/authorize
+            token-uri: http://auth-server:9000/oauth2/token
+            jwk-set-uri: http://auth-server:9000/oauth2/jwks
+            userInfoUri: http://auth-server:9000/userinfo
+            user-name-attribute: sub
+    user:
+      password: secret
+  cloud:
+    gateway:
+      routes:
+        - id: api
+          uri: http://server.local:9090
+          predicates:
+            - Path=/api/{segment}
+          filters:
+            - TokenRelay=
+
+logging:
+  level:
+    ROOT: INFO
+    org:
+      springframework:
+        security: DEBUG
+        cloud: DEBUG
+
+server:
+  port: 9095

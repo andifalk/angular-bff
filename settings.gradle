@@ -1,0 +1,6 @@
+rootProject.name = 'angular-bff'
+
+include 'bff'
+include 'bff:frontend'
+include 'resource'
+include 'spring-authorization-server'
